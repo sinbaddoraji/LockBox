@@ -1,0 +1,36 @@
+﻿<mah:MetroWindow x:Class="LockBox.Views.Windows.RegisterWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:LockBox.Views.Windows"
+                 xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 xmlns:helpers="clr-namespace:LockBox.Data.Helpers"
+                 mc:Ignorable="d"
+                 Title="Register" Height="450" Width="800"
+                 DataContext="{Binding RegisterViewModel, Source={StaticResource ViewModelLocator}}">
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBlock Text="Register for LockBox" FontSize="24" FontWeight="Bold" Margin="0 0 0 20" />
+
+            <Label Content="Username" />
+            <TextBox Text="{Binding Username}" />
+
+            <Label Content="Password" />
+            <PasswordBox Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}"
+                         PasswordChanged="PasswordBox_OnPasswordChanged"/>
+
+            <Label Content="Confirm Password" />
+            <PasswordBox Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}"
+                         PasswordChanged="ConfirmPasswordBox_OnPasswordChanged"/>
+
+            <Label Content="Security Question" />
+            <ComboBox ItemsSource="{Binding SecurityQuestions}" DisplayMemberPath="Question" SelectedValue="{Binding SelectedSecurityQuestion}"/>
+
+            <Label Content="Answer" />
+            <TextBox Text="{Binding SecurityAnswer}" />
+
+            <Button Content="Register" Command="{Binding RegisterCommand}" Margin="0 20 0 0" />
+        </StackPanel>
+    </Grid>
+</mah:MetroWindow>
