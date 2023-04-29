@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LiteDB;
 using LockBox.ViewModels;
@@ -7,9 +8,9 @@ namespace LockBox.Data;
 
 public interface IDatabaseHandler
 {
-	void Login(string password);
+	bool Login(string username, string password);
 
-	bool Insert<T>(string collectionName, T entity);
+	Guid? Insert<T>(string collectionName, T entity);
 
 	bool Update<T>(string collectionName, T entity);
 

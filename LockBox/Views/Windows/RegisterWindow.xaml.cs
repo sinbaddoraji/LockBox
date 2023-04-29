@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,5 +39,6 @@ namespace LockBox.Views.Windows
 			ViewModelLocator.RegisterViewModel
 				.ConfirmPassword = passwordBox.Password;
 		}
+        
     }
 }

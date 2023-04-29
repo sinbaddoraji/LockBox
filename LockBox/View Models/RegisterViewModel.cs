@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using LockBox.Data;
 using LockBox.Data.Commands;
@@ -10,7 +11,7 @@ namespace LockBox.ViewModels
 {
 	public class RegisterViewModel : INotifyPropertyChanged
 	{
-		private readonly IDatabaseHandler _databaseHandler;
+		private readonly DatabaseHandler _databaseHandler;
 
 		private string _username;
 		private string _password;
@@ -18,8 +19,9 @@ namespace LockBox.ViewModels
 		private ObservableCollection<SecurityQuestion> _securityQuestions;
 		private SecurityQuestion _selectedSecurityQuestion;
 		private string _securityAnswer;
+		private string _registerMessage;
 
-		public RegisterViewModel(IDatabaseHandler databaseHandler)
+		public RegisterViewModel(DatabaseHandler databaseHandler)
 		{
 			_databaseHandler = databaseHandler;
 
@@ -30,6 +32,8 @@ namespace LockBox.ViewModels
 				new SecurityQuestion("What is your mother's maiden name?"),
 				new SecurityQuestion("What is the name of your first pet?")
 			};
+
+			_databaseHandler = databaseHandler;
 
 			// Set default selected security question
 			SelectedSecurityQuestion = _securityQuestions[0];
@@ -98,22 +102,44 @@ namespace LockBox.ViewModels
 			}
 		}
 
+		public string RegisterMessage
+		{
+			get => _registerMessage;
+			set
+			{
+				_registerMessage = value;
+				OnPropertyChanged();
+			}
+		}
+
+		private bool _closeWindow;
+
+		public bool CloseWindow
+		{
+			get => _closeWindow;
+			set
+			{
+				_closeWindow = value;
+				OnPropertyChanged();
+			}
+		}
+
 		public ICommand RegisterCommand { get; }
 
 		private bool CanRegister()
 		{
 			return !string.IsNullOrEmpty(Username) &&
 				   !string.IsNullOrEmpty(Password) &&
-				   !string.IsNullOrEmpty(ConfirmPassword) &&
-				   Password == ConfirmPassword &&
+				   !string.IsNullOrEmpty(ConfirmPassword) && Password.Equals(ConfirmPassword) &&
 				   !string.IsNullOrEmpty(SecurityAnswer);
 		}
 
-		private async void Register()
+		private void Register()
 		{
 			// Create user object
 			var user = new User
 			{
+				Id = System.Guid.NewGuid(),
 				Username = Username,
 				Password = Password,
 				SecurityQuestion = SelectedSecurityQuestion.Question,
@@ -121,19 +147,13 @@ namespace LockBox.ViewModels
 			};
 
 			// Register user
-			var result = await _databaseHandler.Register(user);
+			var result =  _databaseHandler.Register(user).Result;
 
-			if (result is true)
-			{
-				// Navigate to login page
-				// ...
-			}
-			else
-			{
-				// Show error message
-				// ...
-			}
+			RegisterMessage = result is true ? "Success" : "Registration failed!";
+			
 		}
+
+		
 
 		public event PropertyChangedEventHandler PropertyChanged;
 

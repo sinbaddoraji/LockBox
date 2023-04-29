@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,6 +25,20 @@ namespace LockBox.Views.Windows
 		public LoginWindow()
 		{
 			InitializeComponent();
+
+			Timer timer = new Timer(1000);
+			timer.Elapsed += (sender, args) => 
+			{
+				var dataContext = ViewModelLocator.LoginViewModel;
+				if (dataContext.CloseDialog)
+				{
+					this.Dispatcher.Invoke(() =>
+					{
+						this.Close();
+					});
+				}
+			};
+			timer.Start();
 		}
 
 		private void PasswordBox_OnPasswordChanged(object sender, RoutedEventArgs e)

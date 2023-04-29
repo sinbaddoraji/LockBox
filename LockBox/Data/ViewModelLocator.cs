@@ -32,7 +32,7 @@ namespace LockBox.Data
 			{
 				if (_registerViewModel == null)
 				{
-					var databaseHandler = App.serviceProvider.GetService<IDatabaseHandler>();
+					var databaseHandler = App.serviceProvider.GetService<DatabaseHandler>();
 					_registerViewModel = new RegisterViewModel(databaseHandler);
 				}
 				return _registerViewModel;

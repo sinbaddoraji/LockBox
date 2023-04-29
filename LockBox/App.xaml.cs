@@ -29,7 +29,7 @@ namespace LockBox
 			services.AddSingleton<DatabaseHandler>();
 
 			services.AddSingleton<ServiceProvider>();
-			services.AddTransient<LoginWindow>();
+			services.AddSingleton<LoginWindow>();
 			services.AddSingleton<MainWindow>();
 			services.AddTransient<RegisterWindow>();
 		}

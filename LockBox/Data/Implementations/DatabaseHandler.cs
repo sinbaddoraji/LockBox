@@ -14,24 +14,40 @@ namespace LockBox.Data
 
 		private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-		public void Login(string password)
+		public static User CurrentUser;
+
+		public static bool IsLoggedIn => CurrentUser != null;
+
+		public bool Login(string username, string password)
 		{
 			try
 			{
-				var connectionString = @$"Filename=core.db;Journal=false;Password={password}";
-				_db = new LiteDatabase(connectionString);
+				_db ??= new LiteDatabase("core.db");
+
+				var users = _db.GetCollection<User>("Users");
+
+				CurrentUser = users.FindOne(x => x.Username == username && x.Password == password);
+
+				if (CurrentUser != null)
+				{
+					Logger.Info("Logged in as {0}", CurrentUser.Username);
+				}
+				else
+					Logger.Info("Failed to log in as {0}", username);
 			}
 			catch (Exception e)
 			{
 				Logger.Error(e, "Error while logging in");
 			}
-		}
-		public bool Insert<T>(string collectionName, T entity)
-		{
-			if (_db == null) return false;
 
-			var collection = _db.GetCollection<T>(collectionName);
-			return collection.Insert(entity);
+			return IsLoggedIn;
+		}
+
+		public Guid? Insert<T>(string collectionName, T entity)
+		{
+			var collection = _db?.GetCollection<T>(collectionName);
+
+			return collection?.Insert(entity);
 		}
 
 		public bool Update<T>(string collectionName, T entity)
@@ -66,7 +82,9 @@ namespace LockBox.Data
 
 		public Task<object> Register(User user)
 		{
-			throw new NotImplementedException();
+			_db ??= new LiteDatabase("core.db");
+			Insert("Users", user);
+			return Task.FromResult<object>(true);
 		}
 	}
 }

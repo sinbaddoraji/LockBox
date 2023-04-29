@@ -6,8 +6,9 @@
                  xmlns:local="clr-namespace:LockBox.Views.Windows"
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:helpers="clr-namespace:LockBox.Data.Helpers"
-                 mc:Ignorable="d"
+                 mc:Ignorable="d" 
                  Title="Register" Height="450" Width="800"
+                 
                  DataContext="{Binding RegisterViewModel, Source={StaticResource ViewModelLocator}}">
     <Grid>
         <StackPanel Margin="20">
@@ -31,6 +32,8 @@
             <TextBox Text="{Binding SecurityAnswer}" />
 
             <Button Content="Register" Command="{Binding RegisterCommand}" Margin="0 20 0 0" />
+
+            <TextBlock Text="{Binding RegisterMessage}"  Foreground="Red" />
         </StackPanel>
     </Grid>
 </mah:MetroWindow>
