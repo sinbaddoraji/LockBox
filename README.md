@@ -6,11 +6,9 @@ LockBox is a simple password manager application built with WPF .NET Core, MahAp
 
 - User authentication and account creation
 - Secure storage of login credentials and other sensitive data
-- Password strength analysis and recommendations
-- Password generator
 - Modern and clean user interface using MahApps
 - Logging of errors and application events using Nlog
-- Lightweight and efficient database using LiteDB
+- Portable, Lightweight and efficient database using LiteDB
 
 ## Installation
 
