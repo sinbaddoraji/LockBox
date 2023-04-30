@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Mime;
+using LockBox.View_Models;
 using LockBox.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,6 +37,21 @@ namespace LockBox.Data
 					_registerViewModel = new RegisterViewModel(databaseHandler);
 				}
 				return _registerViewModel;
+			}
+		}
+
+		private static MainWindowViewModel _mainWindowViewModel;
+
+		public static MainWindowViewModel MainWindowViewModel
+		{
+			get
+			{
+				if (_mainWindowViewModel == null)
+				{
+					var databaseHandler = App.serviceProvider.GetService<DatabaseHandler>();
+					_mainWindowViewModel = new MainWindowViewModel(databaseHandler);
+				}
+				return _mainWindowViewModel;
 			}
 		}
 

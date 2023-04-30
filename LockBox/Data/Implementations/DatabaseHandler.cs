@@ -22,11 +22,11 @@ namespace LockBox.Data
 		{
 			try
 			{
-				_db ??= new LiteDatabase("core.db");
+				_db ??= new LiteDatabase($"Filename={username}_core.db; Password={password};");
 
 				var users = _db.GetCollection<User>("Users");
 
-				CurrentUser = users.FindOne(x => x.Username == username && x.Password == password);
+				CurrentUser = users.FindOne(x => x.Username == username);
 
 				if (CurrentUser != null)
 				{
@@ -55,7 +55,11 @@ namespace LockBox.Data
 			if (_db == null) return false;
 
 			var collection = _db.GetCollection<T>(collectionName);
-			return collection.Update(entity);
+			var valid =  collection.Update(entity);
+
+			_db.Commit();
+
+			return valid;
 		}
 
 		public bool Delete<T>(string collectionName, BsonValue id)
@@ -80,11 +84,18 @@ namespace LockBox.Data
 			return collection?.FindAll();
 		}
 
-		public Task<object> Register(User user)
+		public Task<object> Register(User user, string password)
 		{
-			_db ??= new LiteDatabase("core.db");
-			Insert("Users", user);
-			return Task.FromResult<object>(true);
+			try
+			{
+				_db ??= new LiteDatabase($"Filename={user.Username}_core.db; Password={password};");
+				Insert("Users", user);
+				return Task.FromResult<object>(true);
+			}
+			catch
+			{
+				return Task.FromResult<object>(false);
+			}
 		}
 	}
 }

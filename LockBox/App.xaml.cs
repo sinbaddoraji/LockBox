@@ -37,9 +37,6 @@ namespace LockBox
 		{
 			var loginWindow = serviceProvider.GetService<LoginWindow>();
 			loginWindow.Show();
-
-			//var mainWindow = serviceProvider.GetService<MainWindow>();
-			//mainWindow.Show();
 		}
 	}
 }

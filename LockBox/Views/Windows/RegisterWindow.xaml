@@ -25,12 +25,6 @@
             <PasswordBox Style="{StaticResource MahApps.Styles.PasswordBox.Button.Revealed}"
                          PasswordChanged="ConfirmPasswordBox_OnPasswordChanged"/>
 
-            <Label Content="Security Question" />
-            <ComboBox ItemsSource="{Binding SecurityQuestions}" DisplayMemberPath="Question" SelectedValue="{Binding SelectedSecurityQuestion}"/>
-
-            <Label Content="Answer" />
-            <TextBox Text="{Binding SecurityAnswer}" />
-
             <Button Content="Register" Command="{Binding RegisterCommand}" Margin="0 20 0 0" />
 
             <TextBlock Text="{Binding RegisterMessage}"  Foreground="Red" />

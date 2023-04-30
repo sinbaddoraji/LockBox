@@ -5,9 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LockBox"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:models="clr-namespace:LockBox.Models"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        DataContext="{Binding MainWindowViewModel, Source={StaticResource ViewModelLocator}}"
+        Title="Secrets" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <!-- Left Split-Screen Pane -->
+        <mah:Flyout x:Name="NoteListFlyout" 
+                    Width="250" IsOpen="True" CloseButtonVisibility="Hidden">
+
+            <StackPanel Margin="0,-70,0,0">
+                <Label Content="Secrets" HorizontalAlignment="Center" FontSize="24"/>
+                <ListBox x:Name="NoteList" FontSize="18"
+                         ItemsSource="{Binding Secrets}" 
+                         DisplayMemberPath="Title" SelectionChanged="NoteList_SelectionChanged" 
+                         Margin="0,10,0,11" Width="240" d:ItemsSource="{d:SampleData ItemCount=5}" Height="368">
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            
+                            <MenuItem Header="Add Password" Command="{Binding AddPasswordCommand}"/>
+                            
+                            <MenuItem Header="Add Note" Command="{Binding AddNoteCommand}"/>
+                            <MenuItem Header="Remove" Command="{Binding RemoveNoteCommand}" 
+                                      CommandParameter="{Binding ElementName=NoteList, Path=SelectedItem}"/>
+
+                            <MenuItem Header="Save" Command="{Binding SaveCommand}"></MenuItem>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
+                </ListBox>
+
+            </StackPanel>
+        </mah:Flyout>
+
+        <!-- Right Split-Screen Pane -->
+        <mah:TransitioningContentControl Grid.Column="1" Content="{Binding SelectedItem}" HorizontalContentAlignment="Stretch">
+            <mah:TransitioningContentControl.Resources>
+                <!-- Define the templates for SecureNote and PasswordEntry data types -->
+                <DataTemplate DataType="{x:Type models:SecureNote}">
+                    <StackPanel>
+                        <Label Content="Title" FontSize="20"></Label>
+                        <TextBox Text="{Binding Title}" FontSize="16" Margin="0, 0, 0, 10"/>
+
+                        <Label Content="Note" FontSize="20"></Label>
+                        <TextBox Text="{Binding Note}" FontSize="16" AcceptsReturn="True"/>
+
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type models:PasswordEntry}">
+                    <StackPanel>
+                        <Label Content="Title" FontSize="20"></Label>
+                        <TextBox Text="{Binding Title}"  FontSize="16" Margin="0, 0, 0, 10"/>
+
+                        <Label Content="User Name" FontSize="20"></Label>
+                        <TextBox Text="{Binding UserName}"  FontSize="16" Margin="0, 0, 0, 10" />
+
+                        <Label Content="Password" FontSize="20"></Label>
+                        <TextBox Text="{Binding Password}"  FontSize="16" Margin="0, 0, 0, 10"/>
+
+                    </StackPanel>
+                </DataTemplate>
+            </mah:TransitioningContentControl.Resources>
+        </mah:TransitioningContentControl>
     </Grid>
 </mah:MetroWindow>

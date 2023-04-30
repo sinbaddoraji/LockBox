@@ -16,27 +16,11 @@ namespace LockBox.ViewModels
 		private string _username;
 		private string _password;
 		private string _confirmPassword;
-		private ObservableCollection<SecurityQuestion> _securityQuestions;
-		private SecurityQuestion _selectedSecurityQuestion;
-		private string _securityAnswer;
 		private string _registerMessage;
 
 		public RegisterViewModel(DatabaseHandler databaseHandler)
 		{
 			_databaseHandler = databaseHandler;
-
-			// Initialize security questions
-			SecurityQuestions = new ObservableCollection<SecurityQuestion>
-			{
-				new SecurityQuestion("What is your favorite color?"),
-				new SecurityQuestion("What is your mother's maiden name?"),
-				new SecurityQuestion("What is the name of your first pet?")
-			};
-
-			_databaseHandler = databaseHandler;
-
-			// Set default selected security question
-			SelectedSecurityQuestion = _securityQuestions[0];
 
 			RegisterCommand = new RelayCommand(Register, CanRegister);
 		}
@@ -72,35 +56,6 @@ namespace LockBox.ViewModels
 			}
 		}
 
-		public ObservableCollection<SecurityQuestion> SecurityQuestions
-		{
-			get => _securityQuestions;
-			set
-			{
-				_securityQuestions = value;
-				OnPropertyChanged();
-			}
-		}
-
-		public SecurityQuestion SelectedSecurityQuestion
-		{
-			get => _selectedSecurityQuestion;
-			set
-			{
-				_selectedSecurityQuestion = value;
-				OnPropertyChanged();
-			}
-		}
-
-		public string SecurityAnswer
-		{
-			get => _securityAnswer;
-			set
-			{
-				_securityAnswer = value;
-				OnPropertyChanged();
-			}
-		}
 
 		public string RegisterMessage
 		{
@@ -130,8 +85,7 @@ namespace LockBox.ViewModels
 		{
 			return !string.IsNullOrEmpty(Username) &&
 				   !string.IsNullOrEmpty(Password) &&
-				   !string.IsNullOrEmpty(ConfirmPassword) && Password.Equals(ConfirmPassword) &&
-				   !string.IsNullOrEmpty(SecurityAnswer);
+				   !string.IsNullOrEmpty(ConfirmPassword) && Password.Equals(ConfirmPassword);
 		}
 
 		private void Register()
@@ -140,14 +94,11 @@ namespace LockBox.ViewModels
 			var user = new User
 			{
 				Id = System.Guid.NewGuid(),
-				Username = Username,
-				Password = Password,
-				SecurityQuestion = SelectedSecurityQuestion.Question,
-				SecurityAnswer = SecurityAnswer
+				Username = Username
 			};
 
 			// Register user
-			var result =  _databaseHandler.Register(user).Result;
+			var result =  _databaseHandler.Register(user, Password).Result;
 
 			RegisterMessage = result is true ? "Success" : "Registration failed!";
 			

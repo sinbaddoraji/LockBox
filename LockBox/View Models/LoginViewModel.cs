@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Input;
 using LockBox.Data;
 using LockBox.Data.Commands;
@@ -76,6 +77,9 @@ namespace LockBox.ViewModels
 			if (_databaseHandler.Login(Username, Password))
 			{
 				CloseDialog = true;
+
+				var mainWindow = _serviceProvider.GetService<MainWindow>();
+				mainWindow.Show();
 			}
 		}
 

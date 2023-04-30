@@ -19,5 +19,5 @@ public interface IDatabaseHandler
 	T? GetById<T>(string collectionName, BsonValue id);
 
 	IEnumerable<T>? GetAll<T>(string collectionName);
-	Task<object> Register(User user);
+	Task<object> Register(User user, string password);
 }
