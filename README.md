@@ -6,11 +6,8 @@ LockBox is a simple password manager application built with WPF .NET Core, MahAp
 
 - User authentication and account creation
 - Secure storage of login credentials and other sensitive data
-- Encryption of database using AES-256 encryption algorithm
 - Password strength analysis and recommendations
 - Password generator
-- Security questions for password recovery
-- Dark and light themes using MahApps
 - Modern and clean user interface using MahApps
 - Logging of errors and application events using Nlog
 - Lightweight and efficient database using LiteDB
@@ -29,13 +26,17 @@ To install LockBox, follow these steps:
 
 When you first run LockBox, you will be prompted to create an account. After creating an account, you can log in to the application and start managing your passwords.
 
-To create a new password entry, click on the "New Password" button and fill in the required information. The application will automatically analyze the strength of your password and provide recommendations for making it more secure.
-
-To generate a random password, click on the "Generate Password" button. You can adjust the length and complexity of the password using the options provided.
+To create a new password entry, click on the "New Password" button and fill in the required information. 
 
 To search for a specific password, use the search bar at the top of the password list.
 
-To change the theme of the application, go to "Settings" and select either "Light" or "Dark" mode.
+## Screensots
+
+![image](https://user-images.githubusercontent.com/40364978/235362425-1b5be063-cbc2-4a45-8599-cff347454536.png)
+
+![image](https://user-images.githubusercontent.com/40364978/235362405-7d9332bb-a727-410c-a39c-391115f5ea37.png)
+
+![image](https://user-images.githubusercontent.com/40364978/235362385-b3bf663a-462c-4ddf-b209-068651af7266.png)
 
 
 ## License
